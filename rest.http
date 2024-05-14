@@ -1,5 +1,25 @@
-@rootUrl = http://localhost:3000/api/v1
+@rootUrl = http://localhost:3000
+
+@apiEP = {{rootUrl}}/api/v1
+
+@userApi = {{apiEP}}/users
 
 ### server api
 
 Get {{rootUrl}}
+
+### Endpoint user
+GET {{userApi}}
+
+
+###post
+POST {{userApi}}
+Content-Type: application/json
+
+{
+    "fName":"lamb",
+    "lName":"goat",
+    "phone":"23423423",
+    "email":"aaasd@pp.com",
+    "password":"asdfsgdd34"
+}
