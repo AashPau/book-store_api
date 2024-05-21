@@ -25,6 +25,6 @@ export const insertToken = (obj) => {
   return SessionSchema(obj).save();
 };
 
-export const findToken = (obj) => {
-  return SessionSchema.findOne({ obj });
+export const findToken = (token) => {
+  return SessionSchema.findOne({ token });
 };

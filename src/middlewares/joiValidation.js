@@ -6,8 +6,7 @@ export const newUserValidation = (req, res, next) => {
       fName: Joi.string().required(),
       lName: Joi.string().required(),
       phone: Joi.string().allow("", null),
-      email: Joi.string(),
-      //   email: Joi.string().email({ minDomainSegments: 2 }),
+      email: Joi.string().email({ minDomainSegments: 2 }),
       password: Joi.string().required(),
     });
 
@@ -15,7 +14,7 @@ export const newUserValidation = (req, res, next) => {
     error
       ? res.json({
           status: "error",
-          message: error,
+          message: error.message,
         })
       : next();
   } catch (error) {

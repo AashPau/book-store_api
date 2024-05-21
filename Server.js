@@ -3,7 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 //connect MongoDB
 import { connectMongoDB } from "./src/config/dbConfig.js";

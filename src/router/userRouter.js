@@ -2,7 +2,7 @@ import express from "express";
 import { createNewUser, getUserByEmail } from "../modal/user/userModel.js";
 import { comparePassword, hashPassword } from "../../utils/bcrypt.js";
 import { newUserValidation } from "../middlewares/joiValidation.js";
-import { signAccessJWT, singleRefreshJWT } from "../../utils/jwt.js";
+import { signAccessJWT, signRefreshJWT } from "../../utils/jwt.js";
 import { auth } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -28,6 +28,7 @@ router.post("/", newUserValidation, async (req, res, next) => {
   } catch (error) {
     if (error.message.includes("E11000 duplicate key")) {
       error.message = "Email already in use";
+      error.status = 200;
     }
     next(error);
   }
@@ -57,12 +58,12 @@ router.post("/login", async (req, res, next) => {
           message: "user authenticated",
           tokens: {
             accessJWT: signAccessJWT({ email }),
-            refreshJWT: singleRefreshJWT(email),
+            refreshJWT: signRefreshJWT({ email }),
           },
         });
       }
     }
-    return res.json({
+    res.json({
       status: "error",
       message: "Invalid login Details",
     });
@@ -76,7 +77,7 @@ router.post("/login", async (req, res, next) => {
 //===========private controllers
 
 //return the useer profile
-router.get("/", auth, (req, res) => {
+router.get("/", auth, (req, res, next) => {
   try {
     req.userInfo.refreshJWT = undefined;
     req.userInfo.__v = undefined;

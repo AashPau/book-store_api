@@ -1,4 +1,4 @@
-@rootUrl = http://localhost:3000
+@rootUrl = http://localhost:8000
 
 @apiEP = {{rootUrl}}/api/v1
 

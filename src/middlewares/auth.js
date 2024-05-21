@@ -32,6 +32,11 @@ export const auth = async (req, res, next) => {
         }
       }
     }
+    const error = {
+      message: "Unauthorized",
+      status: 403,
+    };
+    next(error);
   } catch (error) {
     next(error);
   }

@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    role: {
+      type: String,
+      default: "student",
+    },
     fName: {
       type: String,
       required: true,
