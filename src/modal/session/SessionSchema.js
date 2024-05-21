@@ -24,3 +24,7 @@ const SessionSchema = mongoose.model("Session", sessionSchema);
 export const insertToken = (obj) => {
   return SessionSchema(obj).save();
 };
+
+export const findToken = (obj) => {
+  return SessionSchema.findOne({ obj });
+};

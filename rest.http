@@ -6,7 +6,8 @@
 
 ### server api
 
-Get {{rootUrl}}
+Get {{userApi}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRAdC5jb20iLCJpYXQiOjE3MTYyNjIxNzMsImV4cCI6MTcxNjI2MzA3M30.O8qH8oEu0ybJpa7Vn2_UQmznDyCzbOlPQitj_eLT5fQ
 
 ### Endpoint user
 GET {{userApi}}

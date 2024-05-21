@@ -3,26 +3,11 @@ import { createNewUser, getUserByEmail } from "../modal/user/userModel.js";
 import { comparePassword, hashPassword } from "../../utils/bcrypt.js";
 import { newUserValidation } from "../middlewares/joiValidation.js";
 import { signAccessJWT, singleRefreshJWT } from "../../utils/jwt.js";
+import { auth } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.all("/", (req, res, next) => {
-  //always executes
-  console.log("from all");
-  next();
-});
-
-//return the useer profile
-router.get("/", (req, res) => {
-  try {
-    res.json({
-      status: "success",
-      message: "todo Get",
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+//========public controllers
 
 //create new user //public
 
@@ -83,6 +68,23 @@ router.post("/login", async (req, res, next) => {
     });
 
     //jwt
+  } catch (error) {
+    next(error);
+  }
+});
+
+//===========private controllers
+
+//return the useer profile
+router.get("/", auth, (req, res) => {
+  try {
+    req.userInfo.refreshJWT = undefined;
+    req.userInfo.__v = undefined;
+    res.json({
+      status: "success",
+      message: "User Profile",
+      user: req.userInfo,
+    });
   } catch (error) {
     next(error);
   }
