@@ -18,7 +18,7 @@ export const verifyAccessJWT = (token) => {
     return JWT.verify(token, process.env.ACCESS_JWT_SECRET);
   } catch (error) {
     console.log(error.message);
-    return "Invalid Token";
+    return error.message === "jwt expired" ? "Jwt Expired" : "Invalid Token";
   }
 };
 //create refresh jwt

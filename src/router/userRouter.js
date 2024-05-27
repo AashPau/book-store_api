@@ -91,4 +91,15 @@ router.get("/", auth, (req, res, next) => {
   }
 });
 
+//return new access JWT
+router.get("/renew-accessjwt", auth, async (req, res, next) => {
+  try {
+    const { email } = req.userInfo;
+    const accessJWT = await { email };
+    res.json({ accessJWT });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

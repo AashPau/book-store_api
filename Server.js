@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import bookRouter from "./src/router/bookRouter.js";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV !== "production") {
 import userRouter from "./src/router/userRouter.js";
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/books", bookRouter);
 
 app.use("/", (req, res) => {
   res.json({ message: "Server running healthy" });

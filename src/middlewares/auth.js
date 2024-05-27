@@ -31,13 +31,20 @@ export const auth = async (req, res, next) => {
           return next();
         }
       }
+    } else {
+      const error = {
+        message: decoded,
+        status: 403,
+      };
+      next(error);
     }
-    const error = {
-      message: "Unauthorized",
-      status: 403,
-    };
-    next(error);
   } catch (error) {
     next(error);
   }
+};
+
+export const isAdmin = (req, res, next) => {
+  req.userInfo.role === "admin"
+    ? next()
+    : next({ status: 403, message: "very big error Unauthorized" });
 };

@@ -21,3 +21,26 @@ export const newUserValidation = (req, res, next) => {
     next(error);
   }
 };
+
+export const newBooksValidation = (req, res, next) => {
+  try {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      author: Joi.string().required(),
+      thumbnail: Joi.string().required(),
+      isbn: Joi.string().required(),
+      publishedYear: Joi.number(),
+      description: Joi.string().required(),
+    });
+
+    const { error } = schema.validate(req.body);
+    error
+      ? res.json({
+          status: "error",
+          message: error.message,
+        })
+      : next();
+  } catch (error) {
+    next(error);
+  }
+};
