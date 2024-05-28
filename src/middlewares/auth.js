@@ -6,16 +6,13 @@ export const auth = async (req, res, next) => {
   try {
     //1.receive jwt via auth header
     const { authorization } = req.headers;
-    console.log("auth" + authorization);
+
     //2. verify if jwt is valid(no expired, secret key) by decoding jsw
     const decoded = verifyAccessJWT(authorization);
-    console.log("check 2" + decoded.email);
-    console.log("decoded" + decoded);
+
     if (decoded?.email) {
       //3. check if the token exist in the DB, session table
       const tokenObj = await findToken(authorization);
-
-      console.log("token obj =" + tokenObj);
 
       if (tokenObj?._id) {
         //4. extract the email from the decoded jwt obj
@@ -27,7 +24,7 @@ export const auth = async (req, res, next) => {
 
           user.password = undefined;
           req.userInfo = user;
-          console.log("user" + user);
+
           return next();
         }
       }

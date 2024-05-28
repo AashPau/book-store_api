@@ -1,6 +1,10 @@
 import express from "express";
 import { auth, isAdmin } from "../middlewares/auth.js";
-import { insertBook } from "../modal/book/bookModel.js";
+import {
+  getABookById,
+  getAllBooks,
+  insertBook,
+} from "../modal/book/bookModel.js";
 import { newBooksValidation } from "../middlewares/joiValidation.js";
 
 const router = express.Router();
@@ -12,7 +16,7 @@ const router = express.Router();
 router.post("/", auth, isAdmin, newBooksValidation, async (req, res, next) => {
   try {
     const book = await insertBook(req.body);
-    vook?._id
+    book?._id
       ? res.json({
           status: "success",
           message: "book added",
@@ -27,6 +31,30 @@ router.post("/", auth, isAdmin, newBooksValidation, async (req, res, next) => {
       error.message = "Duplicate book";
       error.status = 200;
     }
+    console.log(error);
+    next(error);
+  }
+});
+
+//get
+router.get("/all", auth, isAdmin, async (req, res, next) => {
+  try {
+    const books = await getAllBooks();
+    res.json({ status: "success", books });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//get
+router.get("/:_id?", async (req, res, next) => {
+  try {
+    const { _id } = req.params;
+    const books = _id
+      ? await getABookById(_id)
+      : await getAllBooks({ status: "active" });
+    res.json({ status: "success", books });
+  } catch (error) {
     next(error);
   }
 });
