@@ -44,3 +44,34 @@ export const newBooksValidation = (req, res, next) => {
     next(error);
   }
 };
+export const updateBookValidation = (req, res, next) => {
+  try {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      author: Joi.string().required(),
+      thumbnail: Joi.string().required(),
+      isbn: Joi.string().required(),
+      publishedYear: Joi.number(),
+      description: Joi.string().required(),
+      _id: Joi.string(),
+      status: Joi.string(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//==================Burrow =========
+export const newBurrowValidation = (req, res, next) => {
+  try {
+    const schema = Joi.object({
+      userId: Joi.string().required(),
+      userName: Joi.string().required(),
+      bookId: Joi.string().required(),
+      bookTitle: Joi.string().required(),
+      thumbnail: Joi.string().required(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};

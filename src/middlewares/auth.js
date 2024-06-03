@@ -6,7 +6,7 @@ export const auth = async (req, res, next) => {
   try {
     //1.receive jwt via auth header
     const { authorization } = req.headers;
-
+    console.log("auth  " + authorization);
     //2. verify if jwt is valid(no expired, secret key) by decoding jsw
     const decoded = verifyAccessJWT(authorization);
 
@@ -41,6 +41,7 @@ export const auth = async (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
+  console.log(req.userInfo);
   req.userInfo.role === "admin"
     ? next()
     : next({ status: 403, message: "very big error Unauthorized" });

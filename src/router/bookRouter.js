@@ -4,14 +4,18 @@ import {
   getABookById,
   getAllBooks,
   insertBook,
+  updateABookById,
 } from "../modal/book/bookModel.js";
-import { newBooksValidation } from "../middlewares/joiValidation.js";
+import {
+  newBooksValidation,
+  updateBookValidation,
+} from "../middlewares/joiValidation.js";
 
 const router = express.Router();
 
 //========public controllers
 
-//create new user //public
+//create new book /private
 
 router.post("/", auth, isAdmin, newBooksValidation, async (req, res, next) => {
   try {
@@ -54,6 +58,29 @@ router.get("/:_id?", async (req, res, next) => {
       ? await getABookById(_id)
       : await getAllBooks({ status: "active" });
     res.json({ status: "success", books });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//update the book
+router.put("/", isAdmin, auth, updateBookValidation, async (req, res, next) => {
+  try {
+    const { _id, ...rest } = req.body;
+
+    newBook = await updateABookById(_id, rest);
+    if (newBook?._id) {
+      res.status(200).json({
+        status: "success",
+        message: "Book has been updated",
+      });
+      next();
+    } else {
+      res.status(403).json({
+        status: "error",
+        message: "Book could not be updated",
+      });
+    }
   } catch (error) {
     next(error);
   }

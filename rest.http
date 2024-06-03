@@ -4,6 +4,8 @@
 
 @userApi = {{apiEP}}/users
 
+@bookApi = {{apiEP}}/books
+
 ### server api
 
 Get {{userApi}}
@@ -24,3 +26,7 @@ Content-Type: application/json
     "email":"aaasd@pp.com",
     "password":"asdfsgdd34"
 }
+
+### put updated book
+PUT {{bookApi}}
+Content-Type: application/json
