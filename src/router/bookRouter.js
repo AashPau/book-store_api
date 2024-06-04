@@ -7,7 +7,7 @@ import {
   updateABookById,
 } from "../modal/book/bookModel.js";
 import {
-  newBooksValidation,
+  newBookValidation,
   updateBookValidation,
 } from "../middlewares/joiValidation.js";
 
@@ -17,7 +17,7 @@ const router = express.Router();
 
 //create new book /private
 
-router.post("/", auth, isAdmin, newBooksValidation, async (req, res, next) => {
+router.post("/", auth, isAdmin, newBookValidation, async (req, res, next) => {
   try {
     const book = await insertBook(req.body);
     book?._id
@@ -64,16 +64,17 @@ router.get("/:_id?", async (req, res, next) => {
 });
 
 //update the book
-router.put("/", isAdmin, auth, updateBookValidation, async (req, res, next) => {
+router.put("/", auth, isAdmin, updateBookValidation, async (req, res, next) => {
   try {
     const { _id, ...rest } = req.body;
-
-    newBook = await updateABookById(_id, rest);
+    console.log({ _id, rest });
+    const newBook = await updateABookById(_id, rest);
     if (newBook?._id) {
       res.status(200).json({
         status: "success",
         message: "Book has been updated",
       });
+      console.log("updated");
       next();
     } else {
       res.status(403).json({

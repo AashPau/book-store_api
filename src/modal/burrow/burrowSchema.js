@@ -7,7 +7,7 @@ const burrowSchema = new mongoose.Schema(
       ref: "User",
       required: "true",
     },
-    UserName: {
+    userName: {
       type: String,
       required: true,
     },

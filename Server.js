@@ -23,10 +23,11 @@ if (process.env.NODE_ENV !== "production") {
 
 // router
 import userRouter from "./src/router/userRouter.js";
+import { auth } from "./src/middlewares/auth.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/books", bookRouter);
-app.use("/api/v1/burrows", burrowRouter);
+app.use("/api/v1/burrows", auth, burrowRouter);
 
 app.use("/", (req, res) => {
   res.json({ message: "Server running healthy" });
