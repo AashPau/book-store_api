@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import userRouter from "./src/router/userRouter.js";
 import bookRouter from "./src/router/bookRouter.js";
 import burrowRouter from "./src/router/burrowRouter.js";
+import reviewRouter from "./src/router/reviewRouter.js";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -22,12 +24,13 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // router
-import userRouter from "./src/router/userRouter.js";
+
 import { auth } from "./src/middlewares/auth.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/burrows", auth, burrowRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.use("/", (req, res) => {
   res.json({ message: "Server running healthy" });

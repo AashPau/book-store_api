@@ -1,8 +1,11 @@
 import express from "express";
-import { auth, isAdmin } from "../middlewares/auth.js";
 import { newBurrowValidation } from "../middlewares/joiValidation.js";
-import { getAllBurrows, insertBurrow } from "../modal/burrow/burrowModal.js";
-import { getAllBooks, updateABookById } from "../modal/book/bookModel.js";
+import {
+  getAllBurrows,
+  insertBurrow,
+  updateABurrowById,
+} from "../modal/burrow/burrowModal.js";
+import { updateABookById } from "../modal/book/bookModel.js";
 
 const router = express.Router();
 
@@ -64,6 +67,38 @@ router.get("/", async (req, res, next) => {
       status: "success",
       message: "",
       burrows,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.body._id || !req.body.bookId) {
+      throw new Error("Invalid data");
+    }
+    // update burrow table
+    const burrow = await updateABurrowById(req.body._id, {
+      isReturned: true,
+      returnedDate: Date(),
+    });
+
+    // update book table
+    const book = await updateABookById(req.body.bookId, {
+      isAvailable: true,
+      expectedAvailable: null,
+    });
+
+    if (burrow?._id && book?._id) {
+      return res.json({
+        status: "success",
+        message: "Your have successfull returned the book",
+      });
+    }
+
+    res.json({
+      status: "error",
+      message: "Unable to process your request, pelase contact Admin asap",
     });
   } catch (error) {
     next(error);

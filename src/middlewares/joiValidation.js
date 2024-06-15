@@ -1,16 +1,14 @@
 import Joi from "joi";
 
-export const newUserValidation = (req, res, next) => {
-  try {
-    const schema = Joi.object({
-      fName: Joi.string().required(),
-      lName: Joi.string().required(),
-      phone: Joi.string().allow("", null),
-      email: Joi.string().email({ minDomainSegments: 2 }),
-      password: Joi.string().required(),
-      role: Joi.string().allow(null),
-    });
+const STR = Joi.string();
+const STR_REQUIRED = Joi.string().required();
+const PHONE = Joi.string().allow("", null);
+const EMAIL = Joi.string().email({ minDomainSegments: 2 });
+const ISTRUE = Joi.boolean().allow(null);
+const NUM_REQ = Joi.number();
 
+const joiValidator = ({ req, res, next, schema }) => {
+  try {
     const { error } = schema.validate(req.body);
     error
       ? res.json({
@@ -21,98 +19,70 @@ export const newUserValidation = (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const newUserValidation = (req, res, next) => {
+  const schema = Joi.object({
+    fName: STR_REQUIRED,
+    lName: STR_REQUIRED,
+    phone: PHONE,
+    email: EMAIL,
+    password: STR_REQUIRED,
+  });
+  return joiValidator({ req, res, next, schema });
 };
 
 export const newBookValidation = (req, res, next) => {
-  try {
-    const schema = Joi.object({
-      title: Joi.string().required(),
-      author: Joi.string().required(),
-      thumbnail: Joi.string().required(),
-      isbn: Joi.string().required(),
-      publishedYear: Joi.number(),
-      description: Joi.string().required(),
-    });
-
-    const { error } = schema.validate(req.body);
-    error
-      ? res.json({
-          status: "error",
-          message: error.message,
-        })
-      : next();
-  } catch (error) {
-    next(error);
-  }
+  const schema = Joi.object({
+    title: STR_REQUIRED,
+    author: STR_REQUIRED,
+    thumbnail: STR_REQUIRED,
+    isbn: STR_REQUIRED,
+    publishedYear: Joi.number(),
+    description: STR_REQUIRED,
+  });
+  return joiValidator({ req, res, next, schema });
 };
+
 export const updateBookValidation = (req, res, next) => {
-  try {
-    console.log("inval");
-    const schema = Joi.object({
-      title: Joi.string().required(),
-      author: Joi.string().required(),
-      thumbnail: Joi.string().required(),
-      isAvailable: Joi.boolean().allow(null),
-      expectedAvailable: Joi.date().allow(null, ""),
-      publishedYear: Joi.number(),
-      description: Joi.string().required(),
-      _id: Joi.string(),
-      status: Joi.string(),
-    });
-    const { error } = schema.validate(req.body);
-
-    error
-      ? res.json({
-          status: "error",
-          message: error.message,
-        })
-      : next();
-  } catch (error) {
-    next(error);
-  }
+  const schema = Joi.object({
+    _id: STR_REQUIRED,
+    status: STR_REQUIRED,
+    title: STR_REQUIRED,
+    author: STR_REQUIRED,
+    thumbnail: STR_REQUIRED,
+    publishedYear: Joi.number(),
+    description: STR_REQUIRED,
+    isAvailable: ISTRUE,
+    expectedAvailable: Joi.date().allow(null, ""),
+  });
+  return joiValidator({ req, res, next, schema });
 };
 
-//==================Burrow =========
+// ============= Burrow validation
+
 export const newBurrowValidation = (req, res, next) => {
-  try {
-    console.log("here");
-    const schema = Joi.object({
-      bookId: Joi.string().required(),
-      bookTitle: Joi.string().required(),
-      thumbnail: Joi.string().required(),
-    });
-    const { error } = schema.validate(req.body);
-
-    error
-      ? res.json({
-          status: "error",
-          message: error.message,
-        })
-      : next();
-  } catch (error) {
-    next(error);
-  }
+  const schema = Joi.object({
+    bookId: STR_REQUIRED,
+    bookTitle: STR_REQUIRED,
+    thumbnail: STR_REQUIRED,
+  });
+  return joiValidator({ req, res, next, schema });
 };
 
-///Review val
-export const newReviewValidation = (req, res, next) => {
-  try {
-    console.log("here");
-    const schema = Joi.object({
-      bookId: Joi.string().required(),
-      bookTitle: Joi.string().required(),
-      thumbnail: Joi.string().required(),
-      ratings: Joi.number(),
-    });
-    const { error } = schema.validate(req.body);
+// ============= Review validation
 
-    error
-      ? res.json({
-          status: "error",
-          message: error.message,
-        })
-      : next();
-  } catch (error) {
-    next(error);
-  }
+export const newReviewValidation = (req, res, next) => {
+  const schema = Joi.object({
+    bookId: STR_REQUIRED,
+    bookTitle: STR_REQUIRED,
+    burrowId: STR_REQUIRED,
+    message: STR_REQUIRED,
+    ratings: NUM_REQ,
+    title: STR_REQUIRED,
+    userId: STR_REQUIRED,
+    userName: STR_REQUIRED,
+    thumbnail: STR_REQUIRED,
+  });
+  return joiValidator({ req, res, next, schema });
 };

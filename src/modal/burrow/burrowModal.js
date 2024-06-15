@@ -15,7 +15,7 @@ export const getABurrowById = (_id) => {
   return BurrowSchema.findById(_id);
 };
 
-//update the Burrow
+// update burrow by id
 export const updateABurrowById = (_id, obj) => {
   return BurrowSchema.findByIdAndUpdate(_id, obj);
 };
