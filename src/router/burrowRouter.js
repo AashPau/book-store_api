@@ -2,10 +2,12 @@ import express from "express";
 import { newBurrowValidation } from "../middlewares/joiValidation.js";
 import {
   getAllBurrows,
+  getAllBurrowsByUser,
   insertBurrow,
   updateABurrowById,
 } from "../modal/burrow/burrowModal.js";
 import { updateABookById } from "../modal/book/bookModel.js";
+import { auth, isAdmin } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -59,9 +61,23 @@ router.get("/", async (req, res, next) => {
   try {
     const { _id, role } = req.userInfo;
     console.log(_id);
-    const burrows = (await getAllBurrows({ userId: _id })) || [];
+    const burrows = (await getAllBurrowsByUser({ userId: _id })) || [];
     //if burrow successful
     //update the book table , is Available =>false
+
+    return res.json({
+      status: "success",
+      message: "",
+      burrows,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/all", auth, isAdmin, async (req, res, next) => {
+  try {
+    const burrows = (await getAllBurrows()) || [];
 
     return res.json({
       status: "success",

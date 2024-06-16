@@ -5,8 +5,13 @@ export const insertBurrow = (obj) => {
   return BurrowSchema(obj).save();
 };
 
-//read all
+//all burrows
 export const getAllBurrows = (filter) => {
+  return BurrowSchema.find(filter);
+};
+
+//read all by user
+export const getAllBurrowsByUser = (filter) => {
   return BurrowSchema.find(filter);
 };
 

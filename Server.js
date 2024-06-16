@@ -5,6 +5,7 @@ import userRouter from "./src/router/userRouter.js";
 import bookRouter from "./src/router/bookRouter.js";
 import burrowRouter from "./src/router/burrowRouter.js";
 import reviewRouter from "./src/router/reviewRouter.js";
+import studentsRouter from "./src/router/studentsRouter.js";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -31,6 +32,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/burrows", auth, burrowRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/students", studentsRouter);
 
 app.use("/", (req, res) => {
   res.json({ message: "Server running healthy" });

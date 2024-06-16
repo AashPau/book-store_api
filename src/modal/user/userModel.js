@@ -9,3 +9,6 @@ export const getUserByEmail = (email) => {
 export const updateUser = async (filter, obj) => {
   return await userSchema.findOneAndUpdate(filter, obj);
 };
+export const getAllUser = async () => {
+  return await userSchema.find();
+};
